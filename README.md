@@ -15,7 +15,10 @@ $ mysql -u root -p mysql
 ```
 
 
-3. 아래 SQL 내용을 복사하여 붙여넣는다. 
+3. 패스워드를 입력하고 mysql에 접속한다.
+
+
+4. 아래 SQL 내용을 복사하여 붙여넣는다. 
 
 ```
 -- board_ex database 생성
