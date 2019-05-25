@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choyun.mapper.MemberMapper">
+	
+	<select id="selectMemberList" resultType="MemberVO">
+		SELECT T.no, T.userid, T.userpw, T.username, T.email, T.regdate, T.updateDate
+		FROM (SELECT @rownum:=@rownum+1 AS no, X.*
+			  FROM (SELECT userid, userpw, username, email, regdate, updateDate
+			  		FROM tbl_member, (SELECT @rownum:=0) r
+			  		ORDER BY regdate desc ) X ) T
+	</select>
+	
+	<select id="selectMemberData" resultType="MemberVO">
+		SELECT M.userid, M.userpw, M.username, M.email, M.regdate, M.updateDate
+		FROM tbl_member M
+		WHERE M.userid = #{userid}
+	</select>
+	
+	<select id="selectMemberCheck" resultType="MemberVO">
+		SELECT M.userid, M.userpw, M.username, M.email, M.regdate, M.updateDate
+		FROM tbl_member M
+		WHERE M.userid = #{userid} AND M.userpw = #{userpw}
+	</select>
+	
+	<select id="countTotal" resultType="java.lang.Integer">
+		SELECT COUNT(M.userid)
+		FROM tbl_member M
+	</select>
+	
+	<select id="selectMemberPagingList" resultType="MemberVO">
+		SELECT T.no, T.userid, T.userpw, T.username, T.email, T.regdate, T.updateDate
+		FROM (SELECT @rownum:=@rownum+1 AS no, userid, userpw, username, email, regdate, updateDate
+			  FROM tbl_member, (SELECT @rownum:=0) r ) T
+		limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<insert id="insertMemberData">
+		INSERT INTO tbl_member(userid, userpw, username, email)
+		VALUES (#{userid}, #{userpw}, #{username}, #{email})
+	</insert>
+	
+	<update id="updateMemberData">
+		UPDATE tbl_member
+		SET userpw=#{userpw}, username=#{username}, email=#{email}, updateDate=now()
+		WHERE userid=#{userid}
+	</update>
+	
+	<delete id="deleteMemberData">
+		DELETE
+		FROM tbl_member
+		WHERE userid=#{userid}
+	</delete>
+</mapper>

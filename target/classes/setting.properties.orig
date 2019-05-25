@@ -1,0 +1,51 @@
+#-----------------------------------------------------------------------
+#
+#   setting.properties(/src/main/resources)
+#
+#-----------------------------------------------------------------------
+
+#-----------------------------------------------------------------------
+#
+# 	MySQL driver, url, username, password setting
+#
+#-----------------------------------------------------------------------
+
+
+# MAC dev
+# db.driver=com.mysql.cj.jdbc.Driver
+# mysql.db1.driver=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+# db.url=jdbc:mysql://10.211.55.6:3306/book_ex?serverTimezone=Asia/Seoul
+# mysql.db1.url=jdbc:log4jdbc:mysql://10.211.55.6:3306/book_ex?serverTimezone=Asia/Seoul
+# mysql.db1.username=choyun
+# mysql.db1.password=chdussld
+
+# Windows dev
+# driver=com.mysql.cj.jdbc.Driver
+mysql.db1.driver=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+# mysql.db.url=jdbc:mysql://10.211.55.6:3306/book_ex?serverTimezone=Asia/Seoul
+mysql.db1.url=jdbc:log4jdbc:mysql://localhost:3306/book_ex?serverTimezone=Asia/Seoul
+mysql.db1.username=choyun
+mysql.db1.password=chdussld
+
+#-----------------------------------------------------------------------
+#
+# 	Oracle driver, url, username, password setting
+#
+#-----------------------------------------------------------------------
+
+# MAC dev
+# db.driver=com.mysql.cj.jdbc.Driver
+# oracle.db1.driver=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+# db.url=jdbc:mysql://10.211.55.6:3306/book_ex?serverTimezone=Asia/Seoul
+# oracle.db1.url=jdbc:log4jdbc:oracle:thin:@10.211.55.5:1521:orcl
+# oracle.db1.username=choyun
+# oracle.db1.password=chdussld
+
+# Windows dev
+# driver=com.mysql.cj.jdbc.Driver
+# db.driver=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+# db.url=jdbc:mysql://10.211.55.6:3306/book_ex?serverTimezone=Asia/Seoul
+# db.url=jdbc:log4jdbc:mysql://localhost:3306/book_ex?serverTimezone=Asia/Seoul
+# db.username=choyun
+# db.password=chdussld
+

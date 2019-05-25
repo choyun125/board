@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choyun.mapper.BoardMapper">
+	
+	<select id="selectBoardList" resultType="BoardVO">
+		SELECT T.no, T.bno, T.title, T.content, T.userid, T.username, T.regdate, T.updateDate, T.viewcnt, T.replycnt
+		FROM (SELECT @rownum:=@rownum+1 AS no, S.bno, S.title, S.content, S.userid, S.username, S.regdate, S.updateDate, S.viewcnt, S.replycnt
+			  FROM (SELECT B.bno, B.title, B.content, M.userid, M.username, B.regdate, B.updateDate, B.viewcnt, B.replycnt
+					FROM tbl_board B, tbl_member M, (SELECT @rownum:=0) r
+					WHERE B.writer = M.userid
+					ORDER BY B.BNO DESC ) S ) T
+	</select>
+		
+	<select id="selectBoardData" resultType="BoardVO">
+		SELECT B.bno, B.title, B.content, M.userid, M.username, B.regdate, B.updateDate, B.viewcnt, B.replycnt
+		FROM tbl_board B, tbl_member M
+		WHERE (B.writer = M.userid) AND B.bno=#{bno}
+	</select>
+	
+	<select id="countTotal" resultType="_int">
+		SELECT COUNT(B.bno)
+		FROM tbl_board B, tbl_member M
+		WHERE (B.writer=M.userid)
+		<if test="searchType != null">
+				  <bind name="keyword" value="'%' + _parameter.getKeyword() + '%'" />
+				  <if test="searchType=='all'">
+					  AND (
+					  B.TITLE LIKE #{keyword}
+					  OR B.CONTENT LIKE #{keyword}
+					  OR M.USERNAME LIKE #{keyword}
+					  )
+				  </if>
+				  <if test="searchType=='title'">
+					  AND (
+					  B.TITLE LIKE #{keyword}
+					  )
+				  </if>
+				  <if test="searchType=='content'">
+					  AND (
+					  B.CONTENT LIKE #{keyword}
+					  )
+				  </if>
+				  <if test="searchType=='title_content'">
+					  AND (
+					  B.TITLE LIKE #{keyword}
+					  OR B.CONTENT LIKE #{keyword}
+					  )
+				  </if>
+				  <if test="searchType=='username'">
+					  AND (
+					  B.TITLE LIKE #{keyword}
+					  OR B.CONTENT LIKE #{keyword}
+					  OR M.USERNAME LIKE #{keyword}
+					  )
+				  </if>
+			  </if>
+	</select>
+	
+	<select id="selectBoardPagingList" resultType="BoardVO">
+		SELECT T.no, T.bno, T.title, T.content, T.userid, T.username, T.regdate, T.updateDate, T.viewcnt
+		FROM ( SELECT @rownum:=@rownum+1 AS no, X.*
+			   FROM (SELECT B.bno, B.title, B.content, M.userid, M.username, B.regdate, B.updateDate, B.viewcnt
+					 FROM tbl_board B, tbl_member M, (SELECT @rownum:=0) r
+					 WHERE B.writer = M.userid
+				  <if test="searchType != null">
+					  <bind name="keyword" value="'%' + _parameter.getKeyword() + '%'" />
+					  <if test="searchType=='all'">
+						  AND (
+						  B.TITLE LIKE #{keyword}
+						  OR B.CONTENT LIKE #{keyword}
+						  OR M.USERNAME LIKE #{keyword}
+						  )
+					  </if>
+					  <if test="searchType=='title'">
+						  AND (
+						  B.TITLE LIKE #{keyword}
+						  )
+					  </if>
+					  <if test="searchType=='content'">
+						  AND (
+						  B.CONTENT LIKE #{keyword}
+						  )
+					  </if>
+					  <if test="searchType=='title_content'">
+						  AND (
+						  B.TITLE LIKE #{keyword}
+						  OR B.CONTENT LIKE #{keyword}
+						  )
+					  </if>
+					  <if test="searchType=='username'">
+						  AND (
+						  M.USERNAME LIKE #{keyword}
+						  )
+					  </if>
+				  </if>
+				  ORDER BY B.BNO DESC) X
+			 ) T
+		LIMIT #{pageStart}, #{perPageNum}
+	</select>
+	
+	
+
+	<insert id="insertBoardData">
+		INSERT INTO tbl_board(title, content, writer)
+		VALUES (#{title}, #{content}, ( SELECT userid
+										FROM tbl_member
+										WHERE username=#{username} ) )
+	</insert>
+	
+	<update id="updateBoardData">
+		UPDATE tbl_board
+		SET title=#{title}, content=#{content}, updateDate=now()
+		WHERE bno=#{bno}
+	</update>
+	
+	<update id="updateBoardViewCount">
+		UPDATE tbl_board
+		SET viewcnt= viewcnt+1
+		WHERE bno=#{bno}
+	</update>
+	
+	<update id="updateBoardReplyCount" parameterType="java.util.HashMap">
+		UPDATE tbl_board
+		SET replycnt = replycnt + #{amount}
+		WHERE bno = #{bno}
+	</update>
+	
+	<delete id="deleteBoardData">
+		DELETE
+		FROM tbl_board
+		WHERE bno = #{bno}
+	</delete>
+	
+</mapper>

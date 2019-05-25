@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- setting file read -->
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/setting.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+	
+	<bean id="mysqlDataSource01" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${mysql.db1.driver}"></property>
+		<property name="url" value="${mysql.db1.url}"></property>
+		<property name="username" value="${mysql.db1.username}"></property>
+		<property name="password" value="${mysql.db1.password}"></property>
+	</bean>
+
+	<bean id="mysqlSqlSessionFactory01" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="mysqlDataSource01" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath:/mapper/**/*Mapper.xml"></property>
+		
+	</bean>
+	
+	<bean id="mysqlSqlSession01" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="mysqlSqlSessionFactory01"></constructor-arg>
+	</bean>
+
+	<!-- transcation 처리 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="mysqlDataSource01"></property>
+	</bean>
+	<!-- @Transactional Annotation을 이용하여 Transaction 관리를 위해 추가 -->
+	<tx:annotation-driven />
+	
+	<!-- AOP 설정을 통한 자동적인 Proxy 객체 생성을 위해 설정 추가 --> 
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<aop:config></aop:config>
+	
+	<!-- DAO & Service는 root-context.xml에 등록
+		 servlet container의 경우 servlet-context.xml에 등록 -->
+	<context:component-scan base-package="com.choyun.persistence"></context:component-scan>
+	<context:component-scan base-package="com.choyun.service.impl"></context:component-scan>
+	<context:component-scan base-package="com.choyun.aop"></context:component-scan>
+	
+	
+</beans>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choyun.mapper.ReplyMapper">
+	<select id="selectReplyList" parameterType="java.util.HashMap" resultType="ReplyVO">
+		SELECT @ROWNUM:=@ROWNUM+1 as no, R.rno, R.bno, M.userid, M.username, R.replycontent, R.regdate, R.updateDate
+		FROM tbl_member M, tbl_reply R, (SELECT @ROWNUM:=0) x
+		WHERE (M.userid = R.replyer) AND R.bno = #{bno}
+	</select>
+	
+	<select id="selectReplyData" parameterType="java.util.HashMap" resultType="ReplyVO">
+		SELECT R.rno, R.bno, M.userid, M.username, R.replycontent, R.regdate, R.updateDate
+		FROM tbl_member M, tbl_reply R
+		WHERE (M.userid = R.replyer) AND R.rno = #{rno}
+	</select>
+	
+	<select id="countTotal" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		SELECT COUNT(R.rno)
+		FROM tbl_member M, tbl_reply R
+		WHERE (M.userid = R.replyer) AND R.bno = #{bno}
+	</select>
+	
+	<select id="selectReplyPagingList" parameterType="java.util.HashMap" resultType="ReplyVO">
+		SELECT @ROWNUM:=@ROWNUM+1 AS no, R.rno, R.bno, M.userid, M.username, R.replycontent, R.regdate, R.updateDate
+		FROM tbl_member M, tbl_reply R, (SELECT @ROWNUM:=0) x
+		WHERE (M.userid = R.replyer) AND R.bno = #{bno}
+		LIMIT #{startPage}, #{perPageNum};
+	</select>
+	
+	<insert id="insertReplyData">
+		INSERT INTO tbl_reply(bno, replyer, replycontent)
+		VALUES (#{bno}, #{userid}, #{replycontent})
+	</insert>
+	
+	<update id="updateReplyData">
+		UPDATE tbl_reply
+		SET replycontent=#{replycontent}, updateDate=now()
+		WHERE rno=#{rno}
+	</update>
+	
+	<delete id="deleteReplyData">
+		DELETE 
+		FROM tbl_reply
+		WHERE rno=#{rno}
+	</delete>
+</mapper>

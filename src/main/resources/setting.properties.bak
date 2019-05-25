@@ -1,0 +1,10 @@
+#-----------------------------------------------------------------------
+#
+#   setting.properties(/src/main/resources)
+#
+#-----------------------------------------------------------------------
+
+mysql.db1.driver=com.mysql.cj.jdbc.Driver
+mysql.db1.url=jdbc:mysql://localhost:3306/book_ex?serverTimezone=UTC
+mysql.db1.username=
+mysql.db1.password=
