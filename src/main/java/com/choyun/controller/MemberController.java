@@ -132,7 +132,8 @@ public class MemberController {
 			mService.modifyMemberData(vo);
 		}
 		catch (Exception e) {
-			
+			logger.error("-------- MEMBER UPDATE ERROR --------");
+			logger.error(e.toString());
 		}
 		
 	}

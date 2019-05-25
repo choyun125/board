@@ -27,16 +27,16 @@ public class UploadController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Resource(name = "uploadPath")
+	@Resource(name = "/uploadPath")
 	private String uploadPath;
 	
-	@RequestMapping("list")
+	@RequestMapping("/list")
 	public String list() {
 		
 		return "board/BoardFileUpload";
 	}
 	
-	@RequestMapping("ajax")
+	@RequestMapping("/ajax")
 	public String listajax() {
 		
 		return "board/BoardFileUploadAjax";

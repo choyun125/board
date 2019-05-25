@@ -30,7 +30,7 @@ public class HomeController {
 	@Inject
 	private MemberService mService;
 	
-	@Autowired
+	@Inject
 	BCryptPasswordEncoder passwordEncoder;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
