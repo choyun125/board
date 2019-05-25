@@ -1,5 +1,23 @@
 # board
 
+### 개발환경
+
+```
+Font-End
+ - HTML5
+ - CSS3
+ - jQuery3
+
+Back-End
+ - Spring 4.3
+ - JDK 1.8
+ - MySQL 5.7
+ - Tomcat 9.0
+ - Maven 3.6.1
+ - Mybatis 3.4
+```
+
+### Mysql 설치 + SQL
 
 1. MySQL 5.7을 버전에 맞추어 설치한다.
 
