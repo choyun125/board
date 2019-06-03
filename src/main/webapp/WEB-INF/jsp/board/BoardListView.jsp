@@ -5,6 +5,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" content="text/html; charset=UTF-8">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../resources/css/Frame.css">
 <title>게시판 관리</title>
 </head>
@@ -22,6 +23,9 @@
 			<aside></aside>
 			<section>
 				<div align="center" id="div_body_page">
+					<div>
+						
+					</div>
 					<div>
 						<h1 id="h1_title">게시글 목록</h1>
 					</div>
@@ -61,7 +65,7 @@
 								</colgroup>
 								<thead>
 									<tr id="tr_title">
-										<th><input type="checkbox"></th>
+										<th><input type="checkbox" id="checkedAll"></th>
 										<th>No.</th>
 										<th>제목</th>
 										<th>작성자</th>
@@ -118,6 +122,25 @@
 		
 		alert(method + " 되었습니다.");
 	}
+	
+	$("#checkedAll").on("click", function() {
+		
+		if($(this).is(":checked")) {
+			
+			$(".tr_content input[type=checkbox]").each(function() {
+				$(this).prop("checked", true);
+			});
+			
+		}
+		
+		else {
+			
+			$(".tr_content input[type=checkbox]").each(function() {
+				$(this).prop("checked", false);
+			});
+		}
+		
+	});
 	
 	
 	function actionPageChanged(key, value) {

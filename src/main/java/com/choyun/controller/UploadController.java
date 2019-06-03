@@ -27,7 +27,7 @@ public class UploadController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Resource(name = "/uploadPath")
+	@Resource(name = "uploadPath")
 	private String uploadPath;
 	
 	@RequestMapping("/list")
